@@ -13,10 +13,10 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        // Production frontend URL only
         config.setAllowedOrigins(List.of(
-            "https://fullstack-task-tracker-app-5.onrender.com"
+            "https://tasktrackerfronten.netlify.app"  // deployed frontend URL
         ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
