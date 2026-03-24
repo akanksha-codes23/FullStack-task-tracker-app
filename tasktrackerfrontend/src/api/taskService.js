@@ -3,56 +3,48 @@ import axios from "axios";
 
 /* ================= BASE URL ================= */
 // Production backend URL (deployed)
-const BASE_URL = "https://fullstack-task-tracker-app-5.onrender.com/api";
+const api = axios.create({
+  baseURL: "https://fullstack-task-tracker-app-5.onrender.com/api",
+});
 
-/* ================= TOKEN HEADER ================= */
-const getAuthHeader = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : ""
+/* ================= JWT INTERCEPTOR ================= */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  };
-};
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-/* ================= API ENDPOINTS ================= */
-const API_URL = BASE_URL;
+/* ================= AUTH ENDPOINTS ================= */
+// Signup / Login (no token needed)
+export const signup = (data) => api.post("/auth/signup", data);
+export const login = (data) => api.post("/auth/login", data);
 
-/* ================= GET ALL TASKS ================= */
-export const getAllTasks = async (page = 0, size = 5) => {
-  const response = await axios.get(API_URL, {
-    ...getAuthHeader(),
-    params: { page, size }
-  });
-  return response.data;
-};
+/* ================= TASKS ENDPOINTS ================= */
+export const getAllTasks = (page = 0, size = 5) =>
+  api.get("/tasks", { params: { page, size } });
 
-/* ================= SEARCH / FILTER TASKS ================= */
-export const getTasks = (params) => {
-  return axios.get(API_URL, {
-    ...getAuthHeader(),
-    params
-  });
-};
+export const getTasks = (params) =>
+  api.get("/tasks", { params });
 
-/* ================= CREATE ================= */
-export const createTask = (task) => {
-  return axios.post(API_URL, task, getAuthHeader());
-};
+export const createTask = (task) =>
+  api.post("/tasks", task);
 
-/* ================= UPDATE ================= */
-export const updateTask = (id, task) => {
-  return axios.put(`${API_URL}/${id}`, task, getAuthHeader());
-};
+export const updateTask = (id, task) =>
+  api.put(`/tasks/${id}`, task);
 
-/* ================= DELETE ================= */
-export const deleteTask = (id) => {
-  return axios.delete(`${API_URL}/${id}`, getAuthHeader());
-};
+export const deleteTask = (id) =>
+  api.delete(`/tasks/${id}`);
 
-/* ================= PROGRESS ================= */
+/* ================= PROGRESS ENDPOINTS ================= */
 export const getWeeklyProgress = () =>
-  axios.get(`${API_URL}/progress/weekly`, getAuthHeader());
+  api.get("/tasks/progress/weekly");
 
 export const getMonthlyProgress = () =>
-  axios.get(`${API_URL}/progress/monthly`, getAuthHeader());
+  api.get("/tasks/progress/monthly");
+
+export default api;
