@@ -1,16 +1,22 @@
+// src/api.js
 import axios from "axios";
 
-const BASE_URL = "https://fullstack-task-tracker-app-5.onrender.com";
-/* TOKEN HEADER */
+/* ================= BASE URL ================= */
+// Production backend URL (deployed)
+const BASE_URL = "https://fullstack-task-tracker-app-5.onrender.com/api";
+
+/* ================= TOKEN HEADER ================= */
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
-
   return {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: token ? `Bearer ${token}` : ""
     }
   };
 };
+
+/* ================= API ENDPOINTS ================= */
+const API_URL = BASE_URL;
 
 /* ================= GET ALL TASKS ================= */
 export const getAllTasks = async (page = 0, size = 5) => {
