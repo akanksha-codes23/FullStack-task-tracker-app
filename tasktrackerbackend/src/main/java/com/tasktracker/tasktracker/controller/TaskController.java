@@ -28,7 +28,7 @@ import com.tasktracker.tasktracker.security.JwtUtil;
 import com.tasktracker.tasktracker.model.Status;
 import com.tasktracker.tasktracker.model.Priority;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://your-netlify-link.netlify.app")
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
