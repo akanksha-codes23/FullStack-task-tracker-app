@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/tasks";
-
+const BASE_URL = "https://fullstack-task-tracker-app-5.onrender.com";
 /* TOKEN HEADER */
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
